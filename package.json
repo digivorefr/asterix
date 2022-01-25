@@ -1,0 +1,17 @@
+{
+  "name": "asterix",
+  "version": "1.0.0",
+  "description": "The scss framework who doesn't think you're a noob",
+  "main": "src/index.scss",
+  "repository": "git@github.com:digivorefr/asterix.git",
+  "author": "Digivore",
+  "license": "MIT",
+  "devDependencies": {
+    "sass": "^1.49.0"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "dev": "yarn && yarn run clean && sass --watch src/:dist/",
+    "build": "yarn && yarn run clean && sass --no-source-map src/:dist/"
+  }
+}
