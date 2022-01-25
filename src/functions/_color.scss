@@ -1,0 +1,11 @@
+@charset 'UTF-8';
+
+@function --clr($name) {
+  @if (map-has-key($map: $colors, $key: $name)) {
+    @return map-get($map: $colors, $key: $name);
+  } @else {
+    @if ($verbose == true) {
+      @warn ('"#{$name}" color doesn\'t exist.');
+    }
+  }
+}

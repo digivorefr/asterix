@@ -1,4 +1,32 @@
-@warn ('Here i am');
-* {
-  box-sizing: border-box;
+@charset "UTF-8";
+@use 'sass:color';
+
+@import 'default-variables';
+@import 'functions';
+@import 'mixins';
+@import 'core';
+
+@include asterix();
+
+body {
+  // Example of media query
+  @include --mq(s) {
+    color: yellow;
+  }
+  @include --mq(m l) {
+    color: --clr(default);
+  }
+  // Create a simple specifier --bordered for body.
+  @include --spe(bordered) {
+    border: 10px solid black;
+  }
+  // Create a global specifier, that you can attach to any element (<div class="---text-center"></div>)
+  // Adding a third - to global specifiers avoid any conflict with components attached specifiers
+  * {
+    @include --spe(-text-center, true) {
+      text-align: center;
+    }
+  }
+
+  @extend [data-gap*='--l7'];
 }

@@ -1,0 +1,67 @@
+@charset 'UTF-8';
+
+/*
+* Build a media query, mobile firstly.
+* Requires at least one breakpoint value to work.
+* You can use registered breakpoints (s) or absolute values (1300px).
+* Highest breakpoint value will be considered as a max-width, while the other one will be min-width.
+* ex. : @include --mq(s) => @media screen and (max-width:620px)
+* ex. : @include --mq(s m) => @media screen and (min-width:620px) and (max-width:768px)
+* ex. : @include --mq(m s) => @media screen and (max-width:768px) and (min-width:620px)
+* param $bps breakpoints, space separated
+* param $media the media query to output. default: screen
+*/
+@mixin --mq($bps, $media: screen) {
+  $max: 0px;
+  @if length($bps) > 2 {
+    @error "Maximum 2 breakpoints values are allowed to build a media query.";
+  }
+  @each $breakpoint in $bps {
+    // If an absolute value is used, check if that value is registered or not in breakpoints map.
+    // This is just an indication.
+    @if map-has-key($breakpoints, $breakpoint) == false {
+      @if index(map-values($breakpoints), $breakpoint) == null {
+        @if ($verbose == true) {
+          @debug 'Breakpoint absolute value used ( #{$breakpoint} ). Register it if widely used.';
+        }
+      } @else {
+        @if ($verbose == true) {
+          @debug 'Duplicate breakpoint : absolute value "#{$breakpoint}" is also available with mapped breakpoints.';
+        }
+      }
+    }
+    // Type validation and find highest value
+    @if (type-of($breakpoint) != 'number') and (type-of($breakpoint) != 'string') {
+      @error "Type error : #{$breakpoint}";
+    }
+    // Retrieve the real value in px
+    $value: if(type-of($breakpoint) == 'string', map-get($breakpoints, $breakpoint), $breakpoint);
+    @if ($value > $max) {
+      $max: $value;
+    }
+  }
+  // Build the media query string from $bps
+  $str: '';
+  @each $breakpoint in $bps {
+    // Retrieve the real value in px
+    $value: if(type-of($breakpoint) == 'string', map-get($breakpoints, $breakpoint), $breakpoint);
+    // Build a max-width if needed
+    @if $max == $value and (length($bps) > 1) {
+      $str: '#{$str} and (max-width:#{$value})';
+    } @else if $value == 0px and length($bps) == 1 {
+      // For '0px' breakpoint, we don't need to write a media query. The @content code is rendered.
+      @content;
+    } @else {
+      // Otherwise, build a min-width media query
+      @if type-of($breakpoint) == 'string' {
+        $value: $value + 1;
+      }
+      $str: '#{$str} and (min-width:#{$value})';
+    }
+  }
+  @if $str != '' {
+    @media #{$media}#{$str} {
+      @content;
+    }
+  }
+}
