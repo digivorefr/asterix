@@ -29,14 +29,14 @@ body[class*="--xxsmobile"] {
 }
 ...
 */
-@mixin --spe($specifier, $responsively: false) {
-  &[class*='--#{$specifier}'] {
+@mixin --spe($specifier, $responsively: false, $attribute: class) {
+  &[#{$class}*='--#{$specifier}'] {
     @content;
   }
   @if ($responsively == true) {
     @each $key, $size in $breakpoints {
       @include --mq($key) {
-        &[class*='--#{#{$key}#{$specifier}}'] {
+        &[#{$class}*='--#{#{$key}#{$specifier}}'] {
           @content;
         }
       }
