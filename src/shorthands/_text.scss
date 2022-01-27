@@ -1,6 +1,6 @@
 @charset 'UTF-8';
 
-@mixin --shorthands-text($responsively: true) {
+@mixin --shorthands-text($responsively: false) {
   @include --spe(text-left, $responsively) {
     text-align: left;
     text-align-last: left;

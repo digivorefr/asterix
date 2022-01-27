@@ -2,7 +2,7 @@
 
 /*
 Add a specifier (--mobile for instance) to the current selector.
-param $modifier modifier name
+param $specifier modifier name
 param $responsively create a specifier for each breakpoint
 ---
 body {
@@ -29,14 +29,14 @@ body[class*="--xxsmobile"] {
 }
 ...
 */
-@mixin --spe($modifier, $responsively: false) {
-  &[class*='--#{$modifier}'] {
+@mixin --spe($specifier, $responsively: false) {
+  &[class*='--#{$specifier}'] {
     @content;
   }
   @if ($responsively == true) {
     @each $key, $size in $breakpoints {
       @include --mq($key) {
-        &[class*='--#{#{$key}#{$modifier}}'] {
+        &[class*='--#{#{$key}#{$specifier}}'] {
           @content;
         }
       }

@@ -90,10 +90,12 @@ body {
 // So you can apply a specific css to specific breakpoints.
 * {
   // writes "--text-center" and "--xstext-center" selectors
-  @include --spe(text-center, true) {
+  @include --spe(text-center, $responsively: true) {
     text-align: center;
   }
 }
+// Or simply use one of the Asterix's premade shorthand
 * {
-  @include --shorthands-text;
+  @include --shorthands-text($responsively: true);
+  @include --shorthands-color($responsively: true);
 }

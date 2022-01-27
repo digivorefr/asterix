@@ -14,7 +14,7 @@
 */
 /*
 Add a specifier (--mobile for instance) to the current selector.
-param $modifier modifier name
+param $specifier modifier name
 param $responsively create a specifier for each breakpoint
 ---
 body {
@@ -426,6 +426,38 @@ body[class*="--padded"] {
 @media screen and (min-width:480px) {
   *[class*="--xstext-justify"] {
     text-align: justify;
+  }
+}
+*[class*="--clr-default"] {
+  color: default;
+}
+@media screen and (min-width:480px) {
+  *[class*="--xsclr-default"] {
+    color: default;
+  }
+}
+*[class*="--bg-default"] {
+  background-color: default;
+}
+@media screen and (min-width:480px) {
+  *[class*="--xsbg-default"] {
+    background-color: default;
+  }
+}
+*[class*="--clr-primary"] {
+  color: primary;
+}
+@media screen and (min-width:480px) {
+  *[class*="--xsclr-primary"] {
+    color: primary;
+  }
+}
+*[class*="--bg-primary"] {
+  background-color: primary;
+}
+@media screen and (min-width:480px) {
+  *[class*="--xsbg-primary"] {
+    background-color: primary;
   }
 }
 
