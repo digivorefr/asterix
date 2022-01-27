@@ -1,0 +1,8 @@
+@charset "UTF-8";
+
+/* Allow to extend several extend on a single line */
+@mixin --extends($list) {
+  @each $toapply in $list {
+    @extend #{$toapply};
+  }
+}

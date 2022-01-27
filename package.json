@@ -1,5 +1,5 @@
 {
-  "name": "asterix",
+  "name": "@digivorefr/asterix-sass",
   "version": "1.0.0",
   "description": "The scss framework who doesn't think you're a noob",
   "main": "src/index.scss",
@@ -12,6 +12,6 @@
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "yarn && yarn run clean && sass --watch src/index.scss:dist/index.css",
-    "build": "yarn && yarn run clean && sass --no-source-map src/index.scss:dist/index.css"
+    "build": "yarn && yarn run clean && sass --no-source-map --style=compressed src/index.scss:dist/index.css"
   }
 }

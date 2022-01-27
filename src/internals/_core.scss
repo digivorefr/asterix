@@ -1,0 +1,105 @@
+@charset 'UTF-8';
+@use 'asterix';
+
+// Placeholder setting default layout css vars.
+%init-layout-vars {
+  // Number of columns set in a layout scope.
+  --#{$id}columns: 1;
+  // Gap between columns set in a layout scope.
+  --#{$id}hgap: unset;
+  --#{$id}vgap: unset;
+
+  // Number of columns spaning set in a layout item scope.
+  --#{$id}span: 1;
+
+  // Layout properties.
+  --#{$id}flow: unset;
+  --#{$id}display: unset;
+  --#{$id}justify-content: unset;
+  --#{$id}align-items: unset;
+  --#{$id}align-self: unset;
+}
+// Placeholder setting default flex css vars.
+%init-flex-vars {
+  // Flex variables.
+  --#{$id}wrap: unset;
+  --#{$id}direction: unset;
+  --#{$id}flex: none;
+}
+
+@mixin asterix() {
+  // Initialize css variables into proper scopes.
+  #{if($scope-vars-in-each-layout, "[data-#{$id}layout]", "body")} {
+    @extend %init-layout-vars;
+  }
+  #{if($scope-vars-in-each-layout, "[data-#{$id}flex]", "body")} {
+    @extend %init-flex-vars;
+  }
+
+  @include asterix.build(
+    0,
+    (
+      id: $id,
+      grid-columns-number: $grid-columns-number,
+      gaps: $gaps,
+    )
+  );
+  /* The loop... creates all required selectors for each breakpoint */
+  @each $breakpoint, $value in $breakpoints {
+    @include --mq($breakpoint) {
+      @include asterix.build(
+        $breakpoint,
+        (
+          id: $id,
+          grid-columns-number: $grid-columns-number,
+          gaps: $gaps,
+        )
+      );
+    }
+  }
+
+  [data-#{$id}layout] {
+    display: var(--#{$id}display);
+    justify-content: var(--#{$id}justify-content);
+    align-items: var(--#{$id}align-items);
+    align-self: var(--#{$id}align-self);
+    // Auto-sizing for grid & flex.
+    &[data-#{$id}layout*='--auto'] {
+      &[data-#{$id}layout*='--grid'] {
+        grid-auto-flow: var(--#{$id}flow);
+      }
+      &[data-#{$id}layout*='--flex'] {
+        > * {
+          flex: var(--#{$id}flex);
+        }
+      }
+    }
+  }
+
+  [data-#{$id}flex] {
+    flex-wrap: var(--#{$id}wrap);
+    flex-direction: var(--#{$id}direction);
+    flex: var(--#{$id}flex);
+  }
+
+  [data-#{$id}cols] {
+    grid-template-columns: repeat(var(--#{$id}columns), 1fr);
+  }
+
+  [data-#{$id}col] {
+    grid-column: span var(--#{$id}span);
+  }
+
+  [data-#{$id}gap] {
+    column-gap: var(--#{$id}hgap);
+    row-gap: var(--#{$id}vgap);
+  }
+
+  [data-#{$id}hgap] {
+    column-gap: var(--#{$id}hgap);
+  }
+
+  [data-#{$id}vgap] {
+    row-gap: var(--#{$id}vgap);
+  }
+}

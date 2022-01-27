@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+/* Print asterix's scss variables to css3 variables */
+@mixin --set-css-variables(
+  $variables: (
+    colors,
+    gaps,
+    font-families,
+    shapes,
+  )
+) {
+  @if (list.index($variables, colors)) {
+    // Colors
+    @each $name, $color in $colors {
+      --clr-#{""+$name}: #{$color};
+      // Print into a variable only rgb values, to allow insertion into css rgba() values
+      // ex : color: rgba(var(--clr-background-rgb), 0.5);
+      --clr-#{""+$name}-rgb: #{color.red($color)}, #{color.green($color)}, #{color.blue($color)};
+    }
+  }
+  @if (list.index($variables, gaps)) {
+    // Gaps
+    @each $name, $gap in $gaps {
+      --gap-#{$name}: #{$gap};
+    }
+  }
+  @if (list.index($variables, font-families)) {
+    // Fonts
+    @each $name, $ff in $font-families {
+      --ff-#{$name}: #{$ff};
+    }
+  }
+  @if (list.index($variables, shapes)) {
+    // Shapes
+    @each $name, $shape in $shapes {
+      --shape-#{$name}: #{$shape};
+    }
+  }
+}

@@ -1,28 +1,29 @@
 @charset "UTF-8";
 
 // Add a prefix to all selectors (gap becomes ui-gap when $id = ui-) - default : '' ( no prefix )
-$id: '';
+$id: '' !default;
 // When set to false, all vars are set once in body, allowing scope inheritance in nested layouts.
 // When set to true, all layouts contain reseted vars, preventing any inheritance in nested layouts.
-$scope-vars-in-each-layout: true;
+$scope-vars-in-each-layout: true !default;
 
-// Number of columns available in a grid.
-$grid-columns-number: 12;
-
-// Show an alert when browser doesnt support css grid and css variables.
-$show-unsupported-browser-alert: true !default;
+// Maximal number of columns available in a grid.
+$grid-columns-number: 12 !default;
 
 // Enable to have scss warns
 $verbose: false !default;
 
 /* VARIABLES */
+$colors: (
+  default: black,
+) !default;
+
 $breakpoints: (
-  xxs: 0px,
-  xs: 375px,
-  s: 575px,
-  m: 767px,
-  l: 991px,
-  xl: 1199px,
+  xxs: 320px,
+  xs: 480px,
+  s: 768px,
+  m: 1024px,
+  l: 1200px,
+  xl: 1600px,
 ) !default;
 
 $gaps: (
@@ -35,14 +36,10 @@ $gaps: (
   7: 94px,
 ) !default;
 
-$shapes: (
-  default: 4px,
-) !default;
-
-$colors: (
-  default: black,
-) !default;
-
 $font-families: (
   default: 'sans-serif',
+) !default;
+
+$shapes: (
+  default: 4px,
 ) !default;

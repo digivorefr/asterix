@@ -1,0 +1,11 @@
+@charset 'UTF-8';
+
+@function --ff($name) {
+  @if (map-has-key($map: $font-families, $key: $name)) {
+    @return map-get($map: $font-families, $key: $name);
+  } @else {
+    @if ($verbose == true) {
+      @warn ('"#{$name}" font-family doesn\'t exist.');
+    }
+  }
+}

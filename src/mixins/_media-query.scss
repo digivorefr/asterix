@@ -36,6 +36,9 @@
     }
     // Retrieve the real value in px
     $value: if(type-of($breakpoint) == 'string', map-get($breakpoints, $breakpoint), $breakpoint);
+    @if ($value == null) {
+      @error 'Cannot continue : unknown "#{$breakpoint}" breakpoint required.';
+    }
     @if ($value > $max) {
       $max: $value;
     }
@@ -47,14 +50,14 @@
     $value: if(type-of($breakpoint) == 'string', map-get($breakpoints, $breakpoint), $breakpoint);
     // Build a max-width if needed
     @if $max == $value and (length($bps) > 1) {
-      $str: '#{$str} and (max-width:#{$value})';
+      $str: '#{$str} and (max-width:#{$value - 1})';
     } @else if $value == 0px and length($bps) == 1 {
       // For '0px' breakpoint, we don't need to write a media query. The @content code is rendered.
       @content;
     } @else {
       // Otherwise, build a min-width media query
       @if type-of($breakpoint) == 'string' {
-        $value: $value + 1;
+        $value: $value;
       }
       $str: '#{$str} and (min-width:#{$value})';
     }
