@@ -1,0 +1,99 @@
+@charset 'UTF-8';
+// Importing Asterix...
+@import '../../src/index.scss';
+
+/* Configuration */
+// All variables have defaults.
+// Update only the ones you need to.
+
+// $id: '';
+// $scope-vars-in-each-layout: true;
+$grid-columns-number: 2;
+// $verbose: false;
+$colors: (
+  default: #000000,
+  primary: #256535,
+);
+$breakpoints: (
+  xs: 480px,
+);
+$gaps: (
+  default: 0.25rem,
+);
+$font-families: (
+  default: 'sans-serif',
+);
+$shapes: (
+  default: '4px',
+);
+
+// Write all asterix's rules
+@include asterix();
+
+body {
+  /* Using variables */
+  // Set the basic color from the sass variable
+  color: --clr(default); // asterix function for map-get($colors, default);
+
+  // OR load into the current selector scss variables as css variables.
+  @include --set-css-variables(colors gaps font-families shapes);
+  // then access them with css
+  color: var(--clr-default);
+  font-family: var(--ff-default);
+
+  /* Creating Media queries */
+  // Color must be primary from 'xs' breakpoint value
+  @include --mq(xs) {
+    color: var(--primary);
+  }
+  // And be blue between 700px and 1000px
+  @include --mq(700px 1000px) {
+    color: blue;
+  }
+
+  /* Specifying elements */
+  // Bodies with class="--bordered" will have a default color border
+  @include --spe(bordered) {
+    border: 1rem solid var(--clr-default);
+  }
+  // And you can mix specifiers by chainig them class="--bordered--padded"
+  @include --spe(padded) {
+    padding: 1rem;
+  }
+
+  /* Extending Elements */
+  // It is quicker and easier to use asterix's layout rules in the html code,
+  // like <div data-layout="--grid"></div>.
+  // But, when rendering html with loops, your html code could be overweighted,
+  // and you might be interested in setting those rules in a sass way.
+
+  // Because Asterix works by setting css variables and order them into selectors,
+  // you always have to extend the basic element selector and the specific(s) rule(s).
+  // With the old fashioned way
+  @extend [data-layout];
+  @extend [data-layout*='--grid'];
+  // Or use --extends mixin to extend several elements in one line.
+  @include --extends('[data-gap]' '[data-gap*="--default"]');
+}
+
+/* Shorthands */
+// Create a specifier available for every selector contained elements (shorhand).
+// You can attach it to any inner html element (<div class="--text-center"></div>)
+// Set at the css's root, it will be available to the whole page
+// Beware of conflicts between one of these shorthands and more specific rules.
+* {
+  @include --spe(shadowed) {
+    box-shadow: 0px 0px 5px rgba(var(--clr-default-rgb), 0.1);
+  }
+}
+// Create a responsive modifier.
+// So you can apply a specific css to specific breakpoints.
+* {
+  // writes "--text-center" and "--xstext-center" selectors
+  @include --spe(text-center, true) {
+    text-align: center;
+  }
+}
+* {
+  @include --shorthands-text;
+}

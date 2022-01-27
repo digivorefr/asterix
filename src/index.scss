@@ -1,7 +1,9 @@
 @charset "UTF-8";
 @use 'sass:color';
 @use 'sass:list';
+/** Asterix sass framework - https://github.com/digivorefr/asterix */
 @import 'configuration';
 @import 'functions';
 @import 'mixins';
 @import 'internals/core';
+@import 'shorthands';
