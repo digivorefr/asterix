@@ -1,12 +1,12 @@
 @charset 'UTF-8';
 
-@mixin --shorthands-color($responsively: false) {
+@mixin --shorthands-color($colors, $responsively: false) {
   @each $key, $value in $colors {
     @include --spe(clr-#{$key}, $responsively) {
-      color: $key;
+      color: $value;
     }
     @include --spe(bg-#{$key}, $responsively) {
-      background-color: $key;
+      background-color: $value;
     }
   }
 }

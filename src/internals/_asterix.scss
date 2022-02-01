@@ -1,9 +1,9 @@
 @charset 'UTF-8';
 
-@mixin build($breakpoint, $conf: (id: '', grid-columns-number: 0, gaps: ())) {
-  $id: map-get($conf, id);
-  $grid-columns-number: map-get($conf, grid-columns-number);
-  $gaps: map-get($conf, gaps);
+@mixin build($breakpoint, $options: (id: '', grid-columns-number: 0, gaps: ())) {
+  $id: map-get($options, id);
+  $grid-columns-number: map-get($options, grid-columns-number);
+  $gaps: map-get($options, gaps);
 
   $bp: if($breakpoint == 0, '--', --#{$breakpoint});
 

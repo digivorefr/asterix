@@ -12,6 +12,6 @@
   "scripts": {
     "clean": "rm -rf examples/compiled-css",
     "dev": "yarn && yarn run clean && sass --watch examples/scss/:examples/compiled-css/",
-    "build": "yarn && yarn run clean && sass --no-source-map --style=compressed examples/scss/:examples/compiled-css/"
+    "build": "yarn && yarn run clean && sass --no-source-map examples/scss/:examples/compiled-css/"
   }
 }

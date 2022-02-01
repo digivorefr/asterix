@@ -4,55 +4,57 @@
 // Placeholder setting default layout css vars.
 %init-layout-vars {
   // Number of columns set in a layout scope.
-  --#{$id}columns: 1;
+  --#{--conf(id)}columns: 1;
   // Gap between columns set in a layout scope.
-  --#{$id}hgap: unset;
-  --#{$id}vgap: unset;
+  --#{--conf(id)}hgap: unset;
+  --#{--conf(id)}vgap: unset;
 
   // Number of columns spaning set in a layout item scope.
-  --#{$id}span: 1;
+  --#{--conf(id)}span: 1;
 
   // Layout properties.
-  --#{$id}flow: unset;
-  --#{$id}display: unset;
-  --#{$id}justify-content: unset;
-  --#{$id}align-items: unset;
-  --#{$id}align-self: unset;
+  --#{--conf(id)}flow: unset;
+  --#{--conf(id)}display: unset;
+  --#{--conf(id)}justify-content: unset;
+  --#{--conf(id)}align-items: unset;
+  --#{--conf(id)}align-self: unset;
 }
 // Placeholder setting default flex css vars.
 %init-flex-vars {
   // Flex variables.
-  --#{$id}wrap: unset;
-  --#{$id}direction: unset;
-  --#{$id}flex: none;
+  --#{--conf(id)}wrap: unset;
+  --#{--conf(id)}direction: unset;
+  --#{--conf(id)}flex: none;
 }
 
 @mixin asterix() {
+  $id: --conf(id);
+
   // Initialize css variables into proper scopes.
-  #{if($scope-vars-in-each-layout, "[data-#{$id}layout]", "body")} {
+  #{if(--conf(scope-vars-in-each-layout), "[data-#{$id}layout]", "body")} {
     @extend %init-layout-vars;
   }
-  #{if($scope-vars-in-each-layout, "[data-#{$id}flex]", "body")} {
+  #{if(--conf(scope-vars-in-each-layout), "[data-#{$id}flex]", "body")} {
     @extend %init-flex-vars;
   }
 
   @include asterix.build(
     0,
     (
-      id: $id,
-      grid-columns-number: $grid-columns-number,
-      gaps: $gaps,
+      id: --conf(id),
+      grid-columns-number: --conf(grid-columns-number),
+      gaps: --var(gaps),
     )
   );
   /* The loop... creates all required selectors for each breakpoint */
-  @each $breakpoint, $value in $breakpoints {
+  @each $breakpoint, $value in --var(breakpoints) {
     @include --mq($breakpoint) {
       @include asterix.build(
         $breakpoint,
         (
-          id: $id,
-          grid-columns-number: $grid-columns-number,
-          gaps: $gaps,
+          id: --conf(id),
+          grid-columns-number: --conf(grid-columns-number),
+          gaps: --var(gaps),
         )
       );
     }

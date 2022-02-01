@@ -1,0 +1,13 @@
+@use 'sass:map';
+
+@function --conf($property) {
+  @if (map-has-key($map: $asterix-conf, $key: $property)) {
+    @return map-get($asterix-conf, $property);
+  } @else {
+    @error ('Unknown conf property "#{$property}".');
+  }
+}
+
+@mixin --update-conf($updated-conf) {
+  $asterix-conf: map.merge($asterix-conf, $updated-conf) !global;
+}

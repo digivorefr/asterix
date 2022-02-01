@@ -11,32 +11,32 @@ body {
   }
 }
 =>
-body[class*="--mobile"] {
+body[data-spe*="--mobile"] {
   background: red;
 }
-body[class*="--xxsmobile"] {
+body[data-spe*="--xxsmobile"] {
   background: red;
 }
 @media screen and (min-width:376px) {
-  body[class*="--xsmobile"] {
+  body[data-spe*="--xsmobile"] {
     background: red;
   }
 }
 @media screen and (min-width:576px) {
-  body[class*="--smobile"] {
+  body[data-spe*="--smobile"] {
     background: red;
   }
 }
 ...
 */
-@mixin --spe($specifier, $responsively: false, $attribute: class) {
-  &[#{$class}*='--#{$specifier}'] {
+@mixin --spe($specifier, $responsively: false, $attribute: data-spe) {
+  &[#{$attribute}*='--#{$specifier}'] {
     @content;
   }
   @if ($responsively == true) {
-    @each $key, $size in $breakpoints {
+    @each $key, $size in --var(breakpoints) {
       @include --mq($key) {
-        &[#{$class}*='--#{#{$key}#{$specifier}}'] {
+        &[#{$attribute}*='--#{#{$key}#{$specifier}}'] {
           @content;
         }
       }

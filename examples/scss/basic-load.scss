@@ -6,44 +6,50 @@
 // All variables have defaults.
 // Update only the ones you need to.
 
-// $id: '';
-// $scope-vars-in-each-layout: true;
-$grid-columns-number: 2;
-// $verbose: false;
-$colors: (
-  default: #000000,
-  primary: #256535,
-);
-$breakpoints: (
-  xs: 480px,
-);
-$gaps: (
-  default: 0.25rem,
-);
-$font-families: (
-  default: 'sans-serif',
-);
-$shapes: (
-  default: '4px',
+@include --update-conf(
+  (
+    grid-columns-number: 2,
+  )
 );
 
-// Write all asterix's rules
+@include --update-vars(
+  (
+    breakpoints: (
+      xs: 480px,
+      s: 640px,
+    ),
+    colors: (
+      default: #000000,
+      primary: #256535,
+    ),
+    gaps: (
+      default: 0.25rem,
+    ),
+  )
+);
+
+// Render all asterix's rules
 @include asterix();
 
 body {
   /* Using variables */
-  // Set the basic color from the sass variable
-  color: --clr(default); // asterix function for map-get($colors, default);
+  // Set the basic color from the sass variable using asterix mixin --var
+  color: --var(colors, default);
 
   // OR load into the current selector scss variables as css variables.
-  @include --set-css-variables(colors gaps font-families shapes);
+  @include --set-css-variables(
+    (
+      clr: --var(colors),
+      ff: --var(font-families),
+    )
+  );
   // then access them with css
   color: var(--clr-default);
   font-family: var(--ff-default);
 
   /* Creating Media queries */
-  // Color must be primary from 'xs' breakpoint value
-  @include --mq(xs) {
+  // Color must be primary from 's' breakpoint value
+  @include --mq(s) {
     color: var(--primary);
   }
   // And be blue between 700px and 1000px
@@ -73,7 +79,12 @@ body {
   @extend [data-layout];
   @extend [data-layout*='--grid'];
   // Or use --extends mixin to extend several elements in one line.
-  @include --extends('[data-gap]' '[data-gap*="--default"]');
+  // @include --extends('[data-gap]' '[data-gap*="--default"]');
+  @include --extends(
+    (
+      data-gap: --sdefault,
+    )
+  );
 }
 
 /* Shorthands */
@@ -97,5 +108,5 @@ body {
 // Or simply use one of the Asterix's premade shorthand
 * {
   @include --shorthands-text($responsively: true);
-  @include --shorthands-color($responsively: true);
+  @include --shorthands-color($colors: --var(colors), $responsively: true);
 }

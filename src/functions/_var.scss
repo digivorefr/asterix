@@ -1,0 +1,24 @@
+@use 'sass:map';
+
+@function --var($property, $subproperty: false) {
+  @if (map-has-key($map: $asterix-vars, $key: $property)) {
+    @if ($subproperty != false) {
+      $map: map-get($asterix-vars, $property);
+      @if (map-has-key($map: $map, $key: $subproperty)) {
+        @return map-get($map, $subproperty);
+      } @else {
+        @warn ('"#{$property}/#{$subproperty}" variable doesn\'t exist.');
+        @return unset;
+      }
+    } @else {
+      @return map-get($asterix-vars, $property);
+    }
+  } @else {
+    @warn ('"#{$property}/#{$subproperty}" variable doesn\'t exist.');
+    @return ();
+  }
+}
+
+@mixin --update-vars($map) {
+  $asterix-vars: map.merge($asterix-vars, $map) !global;
+}
