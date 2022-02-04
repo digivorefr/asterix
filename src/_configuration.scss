@@ -1,13 +1,15 @@
 @charset "UTF-8";
 
 $asterix-conf: (
-  // Add a prefix to all selectors (gap becomes ui-gap when $id = ui-) - default : '' ( no prefix )
-  id: '',
+  // Maximal number of columns available in a grid.
+  grid-columns-number: 12,
+  // Default media used in --mq media queries
+  media-queries-default-media: all,
   // When set to false, all vars are set once in body, allowing scope inheritance in nested layouts.
   // When set to true, all layouts contain reseted vars, preventing any inheritance in nested layouts.
   scope-vars-in-each-layout: true,
-  // Maximal number of columns available in a grid.
-  grid-columns-number: 12,
+  // Attribute that custom specifiers will use to attach to.
+  specifiers-default-attribute: data-spe,
   // Enable to have scss warns
   verbose: false
 ) !default;

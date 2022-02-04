@@ -11,7 +11,7 @@
 * param $bps breakpoints, space separated
 * param $media the media query to output. default: screen
 */
-@mixin --mq($bps, $media: screen) {
+@mixin --mq($bps, $media: --conf(media-queries-default-media)) {
   $max: 0px;
   @if length($bps) > 2 {
     @error "Maximum 2 breakpoints values are allowed to build a media query.";

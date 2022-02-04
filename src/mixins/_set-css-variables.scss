@@ -1,10 +1,14 @@
 @charset "UTF-8";
+@use 'sass:color';
 
 /* Print asterix's scss variables to css3 variables */
 @mixin --set-css-variables($vars) {
   @each $name, $variables in $vars {
     @each $key, $value in $variables {
       --#{$name}-#{$key}: #{$value};
+      @if (type-of($value) == color) {
+        --#{$name}-#{$key}-rgb: #{color.red($value)}, #{color.green($value)}, #{color.blue($value)};
+      }
     }
   }
 }

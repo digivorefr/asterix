@@ -1,58 +1,56 @@
 @charset 'UTF-8';
 @use 'asterix';
 
-// Placeholder setting default layout css vars.
-%init-layout-vars {
-  // Number of columns set in a layout scope.
-  --#{--conf(id)}columns: 1;
-  // Gap between columns set in a layout scope.
-  --#{--conf(id)}hgap: unset;
-  --#{--conf(id)}vgap: unset;
-
-  // Number of columns spaning set in a layout item scope.
-  --#{--conf(id)}span: 1;
-
-  // Layout properties.
-  --#{--conf(id)}flow: unset;
-  --#{--conf(id)}display: unset;
-  --#{--conf(id)}justify-content: unset;
-  --#{--conf(id)}align-items: unset;
-  --#{--conf(id)}align-self: unset;
-}
-// Placeholder setting default flex css vars.
-%init-flex-vars {
-  // Flex variables.
-  --#{--conf(id)}wrap: unset;
-  --#{--conf(id)}direction: unset;
-  --#{--conf(id)}flex: none;
-}
-
 @mixin asterix() {
-  $id: --conf(id);
+  /* Initialize css3 core variables */
+  // Placeholder for layout.
+  %init-layout-vars {
+    // Number of columns set in a layout scope.
+    --columns: 1;
+    // Gap between columns set in a layout scope.
+    --hgap: unset;
+    --vgap: unset;
 
+    // Number of columns spaning set in a layout item scope.
+    --span: 1;
+
+    // Layout properties.
+    --flow: unset;
+    --display: unset;
+    --justify-content: unset;
+    --align-items: unset;
+    --align-self: unset;
+  }
+  // Placeholder for flex.
+  %init-flex-vars {
+    // Flex variables.
+    --wrap: unset;
+    --direction: unset;
+    --flex: none;
+  }
   // Initialize css variables into proper scopes.
-  #{if(--conf(scope-vars-in-each-layout), "[data-#{$id}layout]", "body")} {
+  #{if(--conf(scope-vars-in-each-layout), "[data-layout]", "&")} {
     @extend %init-layout-vars;
   }
-  #{if(--conf(scope-vars-in-each-layout), "[data-#{$id}flex]", "body")} {
+  #{if(--conf(scope-vars-in-each-layout), "[data-flex]", "&")} {
     @extend %init-flex-vars;
   }
 
+  /* Building builtins specifiers */
+  // Basic
   @include asterix.build(
     0,
     (
-      id: --conf(id),
       grid-columns-number: --conf(grid-columns-number),
       gaps: --var(gaps),
     )
   );
-  /* The loop... creates all required selectors for each breakpoint */
+  // & for each breakpoint.
   @each $breakpoint, $value in --var(breakpoints) {
     @include --mq($breakpoint) {
       @include asterix.build(
         $breakpoint,
         (
-          id: --conf(id),
           grid-columns-number: --conf(grid-columns-number),
           gaps: --var(gaps),
         )
@@ -60,48 +58,49 @@
     }
   }
 
-  [data-#{$id}layout] {
-    display: var(--#{$id}display);
-    justify-content: var(--#{$id}justify-content);
-    align-items: var(--#{$id}align-items);
-    align-self: var(--#{$id}align-self);
+  /* Setting css properties */
+  [data-layout] {
+    display: var(--display);
+    justify-content: var(--justify-content);
+    align-items: var(--align-items);
+    align-self: var(--align-self);
     // Auto-sizing for grid & flex.
-    &[data-#{$id}layout*='--auto'] {
-      &[data-#{$id}layout*='--grid'] {
-        grid-auto-flow: var(--#{$id}flow);
+    &[data-layout*='--auto'] {
+      &[data-layout*='--grid'] {
+        grid-auto-flow: var(--flow);
       }
-      &[data-#{$id}layout*='--flex'] {
+      &[data-layout*='--flex'] {
         > * {
-          flex: var(--#{$id}flex);
+          flex: var(--flex);
         }
       }
     }
   }
 
-  [data-#{$id}flex] {
-    flex-wrap: var(--#{$id}wrap);
-    flex-direction: var(--#{$id}direction);
-    flex: var(--#{$id}flex);
+  [data-flex] {
+    flex-wrap: var(--wrap);
+    flex-direction: var(--direction);
+    flex: var(--flex);
   }
 
-  [data-#{$id}cols] {
-    grid-template-columns: repeat(var(--#{$id}columns), 1fr);
+  [data-cols] {
+    grid-template-columns: repeat(var(--columns), 1fr);
   }
 
-  [data-#{$id}col] {
-    grid-column: span var(--#{$id}span);
+  [data-col] {
+    grid-column: span var(--span);
   }
 
-  [data-#{$id}gap] {
-    column-gap: var(--#{$id}hgap);
-    row-gap: var(--#{$id}vgap);
+  [data-gap] {
+    column-gap: var(--hgap);
+    row-gap: var(--vgap);
   }
 
-  [data-#{$id}hgap] {
-    column-gap: var(--#{$id}hgap);
+  [data-hgap] {
+    column-gap: var(--hgap);
   }
 
-  [data-#{$id}vgap] {
-    row-gap: var(--#{$id}vgap);
+  [data-vgap] {
+    row-gap: var(--vgap);
   }
 }

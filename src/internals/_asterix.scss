@@ -1,7 +1,6 @@
 @charset 'UTF-8';
 
-@mixin build($breakpoint, $options: (id: '', grid-columns-number: 0, gaps: ())) {
-  $id: map-get($options, id);
+@mixin build($breakpoint, $options: (grid-columns-number: 0, gaps: ())) {
   $grid-columns-number: map-get($options, grid-columns-number);
   $gaps: map-get($options, gaps);
 
@@ -9,187 +8,187 @@
 
   // Store into scoped css3 variables propers columns parameters.
   @for $i from 1 to $grid-columns-number + 1 {
-    %#{$id}cols#{$bp}#{$i} {
-      --#{$id}columns: #{$i};
+    %cols#{$bp}#{$i} {
+      --columns: #{$i};
     }
-    %#{$id}col#{$bp}#{$i} {
-      --#{$id}span: #{$i};
+    %col#{$bp}#{$i} {
+      --span: #{$i};
     }
     // Columns layout.
-    [data-#{$id}cols*='#{$bp}#{$i}'] {
-      @extend %#{$id}cols#{$bp}#{$i};
+    [data-cols*='#{$bp}#{$i}'] {
+      @extend %cols#{$bp}#{$i};
     }
     // Column sizing.
-    [data-#{$id}col*='#{$bp}#{$i}'] {
-      @extend %#{$id}col#{$bp}#{$i};
+    [data-col*='#{$bp}#{$i}'] {
+      @extend %col#{$bp}#{$i};
     }
   }
   // Store into scoped css3 variables propers gaps parameters.
   @each $key, $value in $gaps {
-    %#{$id}vgap-#{$bp}#{$key} {
-      --#{$id}vgap: #{$value};
+    %vgap-#{$bp}#{$key} {
+      --vgap: #{$value};
     }
-    %#{$id}hgap-#{$bp}#{$key} {
-      --#{$id}hgap: #{$value};
+    %hgap-#{$bp}#{$key} {
+      --hgap: #{$value};
     }
-    [data-#{$id}gap*='#{$bp}#{$key}'] {
-      @extend %#{$id}vgap-#{$bp}#{$key};
-      @extend %#{$id}hgap-#{$bp}#{$key};
+    [data-gap*='#{$bp}#{$key}'] {
+      @extend %vgap-#{$bp}#{$key};
+      @extend %hgap-#{$bp}#{$key};
     }
-    [data-#{$id}vgap*='#{$bp}#{$key}'] {
-      @extend %#{$id}vgap-#{$bp}#{$key};
+    [data-vgap*='#{$bp}#{$key}'] {
+      @extend %vgap-#{$bp}#{$key};
     }
-    [data-#{$id}hgap*='#{$bp}#{$key}'] {
-      @extend %#{$id}hgap-#{$bp}#{$key};
+    [data-hgap*='#{$bp}#{$key}'] {
+      @extend %hgap-#{$bp}#{$key};
     }
   }
   // Global Layout rules.
   $displays: none, block, flex, grid;
   @each $display in $displays {
-    %#{$id}layout-#{$bp}#{$display} {
-      --#{$id}display: #{$display};
+    %layout-#{$bp}#{$display} {
+      --display: #{$display};
     }
-    [data-#{$id}layout*='#{$bp}#{$display}'] {
-      @extend %#{$id}layout-#{$bp}#{$display};
+    [data-layout*='#{$bp}#{$display}'] {
+      @extend %layout-#{$bp}#{$display};
     }
   }
-  %#{$id}layout-#{$bp}auto {
-    --#{$id}flow: column;
+  %layout-#{$bp}auto {
+    --flow: column;
   }
-  [data-#{$id}layout*='#{$bp}auto'] {
-    @extend %#{$id}layout-#{$bp}auto;
+  [data-layout*='#{$bp}auto'] {
+    @extend %layout-#{$bp}auto;
     > * {
-      @extend %#{$id}flex-#{$bp}auto;
+      @extend %flex-#{$bp}auto;
     }
   }
-  %#{$id}layout-#{$bp}justify-space-between {
-    --#{$id}justify-content: space-between;
+  %layout-#{$bp}justify-space-between {
+    --justify-content: space-between;
   }
-  [data-#{$id}layout*='#{$bp}justify-space-between'] {
-    @extend %#{$id}layout-#{$bp}justify-space-between;
-  }
-
-  %#{$id}layout-#{$bp}justify-stretch {
-    --#{$id}justify-content: stretch;
-  }
-  [data-#{$id}layout*='#{$bp}justify-stretch'] {
-    @extend %#{$id}layout-#{$bp}justify-stretch;
+  [data-layout*='#{$bp}justify-space-between'] {
+    @extend %layout-#{$bp}justify-space-between;
   }
 
-  %#{$id}layout-#{$bp}justify-center {
-    --#{$id}justify-content: center;
+  %layout-#{$bp}justify-stretch {
+    --justify-content: stretch;
   }
-  [data-#{$id}layout*='#{$bp}justify-center'] {
-    @extend %#{$id}layout-#{$bp}justify-center;
-  }
-
-  %#{$id}layout-#{$bp}justify-start {
-    --#{$id}justify-content: flex-start;
-  }
-  [data-#{$id}layout*='#{$bp}justify-start'] {
-    @extend %#{$id}layout-#{$bp}justify-start;
+  [data-layout*='#{$bp}justify-stretch'] {
+    @extend %layout-#{$bp}justify-stretch;
   }
 
-  %#{$id}layout-#{$bp}justify-end {
-    --#{$id}justify-content: flex-end;
+  %layout-#{$bp}justify-center {
+    --justify-content: center;
   }
-  [data-#{$id}layout*='#{$bp}justify-end'] {
-    @extend %#{$id}layout-#{$bp}justify-end;
-  }
-
-  %#{$id}layout-#{$bp}items-stretch {
-    --#{$id}align-items: stretch;
-  }
-  [data-#{$id}layout*='#{$bp}items-stretch'] {
-    @extend %#{$id}layout-#{$bp}items-stretch;
+  [data-layout*='#{$bp}justify-center'] {
+    @extend %layout-#{$bp}justify-center;
   }
 
-  %#{$id}layout-#{$bp}items-center {
-    --#{$id}align-items: center;
+  %layout-#{$bp}justify-start {
+    --justify-content: flex-start;
   }
-  [data-#{$id}layout*='#{$bp}items-center'] {
-    @extend %#{$id}layout-#{$bp}items-center;
-  }
-
-  %#{$id}layout-#{$bp}items-start {
-    --#{$id}align-items: flex-start;
-  }
-  [data-#{$id}layout*='#{$bp}items-start'] {
-    @extend %#{$id}layout-#{$bp}items-start;
+  [data-layout*='#{$bp}justify-start'] {
+    @extend %layout-#{$bp}justify-start;
   }
 
-  %#{$id}layout-#{$bp}items-end {
-    --#{$id}align-items: flex-end;
+  %layout-#{$bp}justify-end {
+    --justify-content: flex-end;
   }
-  [data-#{$id}layout*='#{$bp}items-end'] {
-    @extend %#{$id}layout-#{$bp}items-end;
-  }
-
-  %#{$id}layout-#{$bp}self-stretch {
-    --#{$id}align-self: stretch;
-  }
-  [data-#{$id}layout*='#{$bp}self-stretch'] {
-    @extend %#{$id}layout-#{$bp}self-stretch;
+  [data-layout*='#{$bp}justify-end'] {
+    @extend %layout-#{$bp}justify-end;
   }
 
-  %#{$id}layout-#{$bp}self-center {
-    --#{$id}align-self: center;
+  %layout-#{$bp}items-stretch {
+    --align-items: stretch;
   }
-  [data-#{$id}layout*='#{$bp}self-center'] {
-    @extend %#{$id}layout-#{$bp}self-center;
-  }
-
-  %#{$id}layout-#{$bp}self-start {
-    --#{$id}align-self: flex-start;
-  }
-  [data-#{$id}layout*='#{$bp}self-start'] {
-    @extend %#{$id}layout-#{$bp}self-start;
+  [data-layout*='#{$bp}items-stretch'] {
+    @extend %layout-#{$bp}items-stretch;
   }
 
-  %#{$id}layout-#{$bp}self-end {
-    --#{$id}align-self: flex-end;
+  %layout-#{$bp}items-center {
+    --align-items: center;
   }
-  [data-#{$id}layout*='#{$bp}self-end'] {
-    @extend %#{$id}layout-#{$bp}self-end;
+  [data-layout*='#{$bp}items-center'] {
+    @extend %layout-#{$bp}items-center;
+  }
+
+  %layout-#{$bp}items-start {
+    --align-items: flex-start;
+  }
+  [data-layout*='#{$bp}items-start'] {
+    @extend %layout-#{$bp}items-start;
+  }
+
+  %layout-#{$bp}items-end {
+    --align-items: flex-end;
+  }
+  [data-layout*='#{$bp}items-end'] {
+    @extend %layout-#{$bp}items-end;
+  }
+
+  %layout-#{$bp}self-stretch {
+    --align-self: stretch;
+  }
+  [data-layout*='#{$bp}self-stretch'] {
+    @extend %layout-#{$bp}self-stretch;
+  }
+
+  %layout-#{$bp}self-center {
+    --align-self: center;
+  }
+  [data-layout*='#{$bp}self-center'] {
+    @extend %layout-#{$bp}self-center;
+  }
+
+  %layout-#{$bp}self-start {
+    --align-self: flex-start;
+  }
+  [data-layout*='#{$bp}self-start'] {
+    @extend %layout-#{$bp}self-start;
+  }
+
+  %layout-#{$bp}self-end {
+    --align-self: flex-end;
+  }
+  [data-layout*='#{$bp}self-end'] {
+    @extend %layout-#{$bp}self-end;
   }
 
   // Specific Flex layout.
   // Containing layout.
-  %#{$id}flex-#{$bp}wrap {
-    --#{$id}wrap: wrap;
+  %flex-#{$bp}wrap {
+    --wrap: wrap;
   }
-  [data-#{$id}flex*='#{$bp}wrap'] {
-    @extend %#{$id}flex-#{$bp}wrap;
+  [data-flex*='#{$bp}wrap'] {
+    @extend %flex-#{$bp}wrap;
   }
-  %#{$id}flex-#{$bp}no-wrap {
-    --#{$id}wrap: no-wrap;
+  %flex-#{$bp}no-wrap {
+    --wrap: no-wrap;
   }
-  [data-#{$id}flex*='#{$bp}no-wrap'] {
-    @extend %#{$id}flex-#{$bp}no-wrap;
+  [data-flex*='#{$bp}no-wrap'] {
+    @extend %flex-#{$bp}no-wrap;
   }
-  %#{$id}flex-#{$bp}row {
-    --#{$id}direction: row;
+  %flex-#{$bp}row {
+    --direction: row;
   }
-  [data-#{$id}flex*='#{$bp}row'] {
-    @extend %#{$id}flex-#{$bp}row;
+  [data-flex*='#{$bp}row'] {
+    @extend %flex-#{$bp}row;
   }
-  %#{$id}flex-#{$bp}column {
-    --#{$id}direction: column;
+  %flex-#{$bp}column {
+    --direction: column;
   }
-  [data-#{$id}flex*='#{$bp}column'] {
-    @extend %#{$id}flex-#{$bp}column;
+  [data-flex*='#{$bp}column'] {
+    @extend %flex-#{$bp}column;
   }
   // Contained layout.
-  %#{$id}flex-#{$bp}none {
-    --#{$id}flex: none;
+  %flex-#{$bp}none {
+    --flex: none;
   }
-  [data-#{$id}flex*='#{$bp}none'] {
-    @extend %#{$id}flex-#{$bp}none;
+  [data-flex*='#{$bp}none'] {
+    @extend %flex-#{$bp}none;
   }
-  %#{$id}flex-#{$bp}auto {
-    --#{$id}flex: 1 1 auto;
+  %flex-#{$bp}auto {
+    --flex: 1 1 auto;
   }
-  [data-#{$id}flex*='#{$bp}auto'] {
-    @extend %#{$id}flex-#{$bp}auto;
+  [data-flex*='#{$bp}auto'] {
+    @extend %flex-#{$bp}auto;
   }
 }

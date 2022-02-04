@@ -1,0 +1,588 @@
+/** Asterix sass framework - https://github.com/digivorefr/asterix */
+/* Allow to extend several attribute with several values on a single line */
+/*
+Add a specifier (--mobile for instance) to the current selector.
+param $specifier modifier name
+param $responsively {false} create a specifier for each breakpoint
+param $attribute {data-spe} define the attribute the specifier will be attached to
+param $local {true} indicate if the specifier is exclusive to the current selector or if it can be used in every children
+---
+body {
+  @include --spe(mobile, true) {
+    background: red;
+  }
+}
+=>
+body[data-spe*="--mobile"] {
+  background: red;
+}
+body[data-spe*="--xxsmobile"] {
+  background: red;
+}
+@media screen and (min-width:376px) {
+  body[data-spe*="--xsmobile"] {
+    background: red;
+  }
+}
+@media screen and (min-width:576px) {
+  body[data-spe*="--smobile"] {
+    background: red;
+  }
+}
+...
+*/
+/*
+* Build a media query, mobile firstly.
+* Requires at least one breakpoint value to work.
+* You can use registered breakpoints (s) or absolute values (1300px).
+* Highest breakpoint value will be considered as a max-width, while the other one will be min-width.
+* ex. : @include --mq(s) => @media screen and (max-width:620px)
+* ex. : @include --mq(s m) => @media screen and (min-width:620px) and (max-width:768px)
+* ex. : @include --mq(m s) => @media screen and (max-width:768px) and (min-width:620px)
+* param $bps breakpoints, space separated
+* param $media the media query to output. default: screen
+*/
+/* Print asterix's scss variables to css3 variables */
+/* Configuration */
+/* Initialize css3 core variables */
+[data-layout] {
+  --columns: 1;
+  --hgap: unset;
+  --vgap: unset;
+  --span: 1;
+  --flow: unset;
+  --display: unset;
+  --justify-content: unset;
+  --align-items: unset;
+  --align-self: unset;
+}
+
+[data-flex] {
+  --wrap: unset;
+  --direction: unset;
+  --flex: none;
+}
+
+/* Building builtins specifiers */
+[data-cols*="--1"] {
+  --columns: 1;
+}
+
+[data-col*="--1"] {
+  --span: 1;
+}
+
+[data-cols*="--2"] {
+  --columns: 2;
+}
+
+[data-col*="--2"] {
+  --span: 2;
+}
+
+[data-vgap*="--1"], [data-gap*="--1"] {
+  --vgap: 1rem;
+}
+
+[data-hgap*="--1"], [data-gap*="--1"] {
+  --hgap: 1rem;
+}
+
+[data-layout*="--none"] {
+  --display: none;
+}
+
+[data-layout*="--block"] {
+  --display: block;
+}
+
+[data-layout*="--flex"] {
+  --display: flex;
+}
+
+[data-layout*="--grid"] {
+  --display: grid;
+}
+
+[data-layout*="--auto"] {
+  --flow: column;
+}
+
+[data-layout*="--justify-space-between"] {
+  --justify-content: space-between;
+}
+
+[data-layout*="--justify-stretch"] {
+  --justify-content: stretch;
+}
+
+[data-layout*="--justify-center"] {
+  --justify-content: center;
+}
+
+[data-layout*="--justify-start"] {
+  --justify-content: flex-start;
+}
+
+[data-layout*="--justify-end"] {
+  --justify-content: flex-end;
+}
+
+[data-layout*="--items-stretch"] {
+  --align-items: stretch;
+}
+
+[data-layout*="--items-center"] {
+  --align-items: center;
+}
+
+[data-layout*="--items-start"] {
+  --align-items: flex-start;
+}
+
+[data-layout*="--items-end"] {
+  --align-items: flex-end;
+}
+
+[data-layout*="--self-stretch"] {
+  --align-self: stretch;
+}
+
+[data-layout*="--self-center"] {
+  --align-self: center;
+}
+
+[data-layout*="--self-start"] {
+  --align-self: flex-start;
+}
+
+[data-layout*="--self-end"] {
+  --align-self: flex-end;
+}
+
+[data-flex*="--wrap"] {
+  --wrap: wrap;
+}
+
+[data-flex*="--no-wrap"] {
+  --wrap: no-wrap;
+}
+
+[data-flex*="--row"] {
+  --direction: row;
+}
+
+[data-flex*="--column"] {
+  --direction: column;
+}
+
+[data-flex*="--none"] {
+  --flex: none;
+}
+
+[data-flex*="--auto"], [data-layout*="--auto"] > * {
+  --flex: 1 1 auto;
+}
+
+@media all and (min-width:480px) {
+  [data-cols*="--xs1"] {
+    --columns: 1;
+  }
+
+  [data-col*="--xs1"] {
+    --span: 1;
+  }
+
+  [data-cols*="--xs2"] {
+    --columns: 2;
+  }
+
+  [data-col*="--xs2"] {
+    --span: 2;
+  }
+
+  [data-vgap*="--xs1"], [data-gap*="--xs1"] {
+    --vgap: 1rem;
+  }
+
+  [data-hgap*="--xs1"], [data-gap*="--xs1"] {
+    --hgap: 1rem;
+  }
+
+  [data-layout*="--xsnone"] {
+    --display: none;
+  }
+
+  [data-layout*="--xsblock"] {
+    --display: block;
+  }
+
+  [data-layout*="--xsflex"] {
+    --display: flex;
+  }
+
+  [data-layout*="--xsgrid"] {
+    --display: grid;
+  }
+
+  [data-layout*="--xsauto"] {
+    --flow: column;
+  }
+
+  [data-layout*="--xsjustify-space-between"] {
+    --justify-content: space-between;
+  }
+
+  [data-layout*="--xsjustify-stretch"] {
+    --justify-content: stretch;
+  }
+
+  [data-layout*="--xsjustify-center"] {
+    --justify-content: center;
+  }
+
+  [data-layout*="--xsjustify-start"] {
+    --justify-content: flex-start;
+  }
+
+  [data-layout*="--xsjustify-end"] {
+    --justify-content: flex-end;
+  }
+
+  [data-layout*="--xsitems-stretch"] {
+    --align-items: stretch;
+  }
+
+  [data-layout*="--xsitems-center"] {
+    --align-items: center;
+  }
+
+  [data-layout*="--xsitems-start"] {
+    --align-items: flex-start;
+  }
+
+  [data-layout*="--xsitems-end"] {
+    --align-items: flex-end;
+  }
+
+  [data-layout*="--xsself-stretch"] {
+    --align-self: stretch;
+  }
+
+  [data-layout*="--xsself-center"] {
+    --align-self: center;
+  }
+
+  [data-layout*="--xsself-start"] {
+    --align-self: flex-start;
+  }
+
+  [data-layout*="--xsself-end"] {
+    --align-self: flex-end;
+  }
+
+  [data-flex*="--xswrap"] {
+    --wrap: wrap;
+  }
+
+  [data-flex*="--xsno-wrap"] {
+    --wrap: no-wrap;
+  }
+
+  [data-flex*="--xsrow"] {
+    --direction: row;
+  }
+
+  [data-flex*="--xscolumn"] {
+    --direction: column;
+  }
+
+  [data-flex*="--xsnone"] {
+    --flex: none;
+  }
+
+  [data-flex*="--xsauto"], [data-layout*="--xsauto"] > * {
+    --flex: 1 1 auto;
+  }
+}
+@media all and (min-width:640px) {
+  [data-cols*="--s1"] {
+    --columns: 1;
+  }
+
+  [data-col*="--s1"] {
+    --span: 1;
+  }
+
+  [data-cols*="--s2"] {
+    --columns: 2;
+  }
+
+  [data-col*="--s2"] {
+    --span: 2;
+  }
+
+  [data-vgap*="--s1"], [data-gap*="--s1"] {
+    --vgap: 1rem;
+  }
+
+  [data-hgap*="--s1"], [data-gap*="--s1"] {
+    --hgap: 1rem;
+  }
+
+  [data-layout*="--snone"] {
+    --display: none;
+  }
+
+  [data-layout*="--sblock"] {
+    --display: block;
+  }
+
+  [data-layout*="--sflex"] {
+    --display: flex;
+  }
+
+  [data-layout*="--sgrid"] {
+    --display: grid;
+  }
+
+  [data-layout*="--sauto"] {
+    --flow: column;
+  }
+
+  [data-layout*="--sjustify-space-between"] {
+    --justify-content: space-between;
+  }
+
+  [data-layout*="--sjustify-stretch"] {
+    --justify-content: stretch;
+  }
+
+  [data-layout*="--sjustify-center"] {
+    --justify-content: center;
+  }
+
+  [data-layout*="--sjustify-start"] {
+    --justify-content: flex-start;
+  }
+
+  [data-layout*="--sjustify-end"] {
+    --justify-content: flex-end;
+  }
+
+  [data-layout*="--sitems-stretch"] {
+    --align-items: stretch;
+  }
+
+  [data-layout*="--sitems-center"] {
+    --align-items: center;
+  }
+
+  [data-layout*="--sitems-start"] {
+    --align-items: flex-start;
+  }
+
+  [data-layout*="--sitems-end"] {
+    --align-items: flex-end;
+  }
+
+  [data-layout*="--sself-stretch"] {
+    --align-self: stretch;
+  }
+
+  [data-layout*="--sself-center"] {
+    --align-self: center;
+  }
+
+  [data-layout*="--sself-start"] {
+    --align-self: flex-start;
+  }
+
+  [data-layout*="--sself-end"] {
+    --align-self: flex-end;
+  }
+
+  [data-flex*="--swrap"] {
+    --wrap: wrap;
+  }
+
+  [data-flex*="--sno-wrap"] {
+    --wrap: no-wrap;
+  }
+
+  [data-flex*="--srow"] {
+    --direction: row;
+  }
+
+  [data-flex*="--scolumn"] {
+    --direction: column;
+  }
+
+  [data-flex*="--snone"] {
+    --flex: none;
+  }
+
+  [data-flex*="--sauto"], [data-layout*="--sauto"] > * {
+    --flex: 1 1 auto;
+  }
+}
+/* Setting css properties */
+[data-layout] {
+  display: var(--display);
+  justify-content: var(--justify-content);
+  align-items: var(--align-items);
+  align-self: var(--align-self);
+}
+[data-layout][data-layout*="--auto"][data-layout*="--grid"] {
+  grid-auto-flow: var(--flow);
+}
+[data-layout][data-layout*="--auto"][data-layout*="--flex"] > * {
+  flex: var(--flex);
+}
+
+[data-flex] {
+  flex-wrap: var(--wrap);
+  flex-direction: var(--direction);
+  flex: var(--flex);
+}
+
+[data-cols] {
+  grid-template-columns: repeat(var(--columns), 1fr);
+}
+
+[data-col] {
+  grid-column: span var(--span);
+}
+
+[data-gap] {
+  column-gap: var(--hgap);
+  row-gap: var(--vgap);
+}
+
+[data-hgap] {
+  column-gap: var(--hgap);
+}
+
+[data-vgap] {
+  row-gap: var(--vgap);
+}
+
+[data-bt] {
+  --color: var(--clr-default);
+  --font-size: 1rem;
+  --background: var(--clr-light);
+  --background-on: var(--clr-background);
+  color: var(--color);
+  border: none;
+  outline: none;
+  display: block;
+  cursor: pointer;
+  padding: 0.5em 1em;
+  position: relative;
+  font-size: var(--font-size);
+  max-width: 100%;
+  box-shadow: 0px 0px 0px var(--background);
+  transition: all 125ms ease-in-out;
+  font-weight: bold;
+  white-space: nowrap;
+  border-radius: 3px;
+  text-overflow: ellipsis;
+  letter-spacing: -0.1px;
+  text-decoration: none;
+  background-color: var(--background);
+}
+[data-bt]:visited {
+  color: var(--color);
+}
+[data-bt]:hover {
+  transform: translateX(-2px) translateY(-2px);
+  box-shadow: 4px 4px 0px var(--background);
+  transition-duration: 70ms;
+  background-color: var(--background-on);
+}
+
+[data-bt*="--primary"] {
+  --color: var(--clr-light);
+  --background: var(--clr-primary);
+  --background-on: var(--clr-primary-on);
+}
+
+[data-bt*="--secondary"] {
+  --color: var(--clr-light);
+  --background: var(--clr-secondary);
+  --background-on: var(--clr-secondary-on);
+}
+
+[data-bt*="--large"] {
+  --font-size: 1.3rem;
+}
+
+[data-bt*="--small"] {
+  --font-size: 0.8rem;
+}
+
+[data-bt*="--disabled"] {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+body {
+  /* Using variables */
+  color: #141414;
+  margin: 0 48px;
+  --clr-default: #141414;
+  --clr-default-rgb: 20, 20, 20;
+  --clr-primary: #08a858;
+  --clr-primary-rgb: 8, 168, 88;
+  --clr-primary-on: #22c272;
+  --clr-primary-on-rgb: 34, 194, 114;
+  --clr-secondary: #d40095;
+  --clr-secondary-rgb: 212, 0, 149;
+  --clr-secondary-on: #f03eba;
+  --clr-secondary-on-rgb: 240, 62, 186;
+  --clr-background: #fefefe;
+  --clr-background-rgb: 254, 254, 254;
+  --clr-light: #f0f0f0;
+  --clr-light-rgb: 240, 240, 240;
+  --ff-default: sans-serif;
+  color: var(--clr-default);
+  font-family: var(--ff-default);
+  /* Creating Media queries */
+  /* Specifying elements */
+  /* Extending Elements */
+}
+@media all and (min-width:640px) {
+  body {
+    color: var(--clr-primary);
+  }
+}
+@media all and (min-width:700px) and (max-width:999px) {
+  body {
+    color: blue;
+  }
+}
+body[data-spe*="--bordered"] {
+  border: 1rem solid var(--clr-default);
+}
+body[data-spe*="--padded"] {
+  padding: 1rem;
+}
+
+/* Shorthands */
+*[data-spe*="--shadowed"] {
+  box-shadow: 0px 0px 5px rgba(var(--clr-default-rgb), 0.1);
+}
+
+*[data-spe*="--text-center"] {
+  text-align: center;
+}
+@media all and (min-width:480px) {
+  *[data-spe*="--xstext-center"] {
+    text-align: center;
+  }
+}
+@media all and (min-width:640px) {
+  *[data-spe*="--stext-center"] {
+    text-align: center;
+  }
+}

@@ -1,20 +1,20 @@
 @use 'sass:map';
 
-@function --var($property, $subproperty: false) {
-  @if (map-has-key($map: $asterix-vars, $key: $property)) {
-    @if ($subproperty != false) {
-      $map: map-get($asterix-vars, $property);
-      @if (map-has-key($map: $map, $key: $subproperty)) {
-        @return map-get($map, $subproperty);
+@function --var($group, $property: false) {
+  @if (map-has-key($map: $asterix-vars, $key: $group)) {
+    @if ($property != false) {
+      $map: map-get($asterix-vars, $group);
+      @if (map-has-key($map: $map, $key: $property)) {
+        @return map-get($map, $property);
       } @else {
-        @warn ('"#{$property}/#{$subproperty}" variable doesn\'t exist.');
+        @warn ('"#{$group}/#{$property}" variable doesn\'t exist.');
         @return unset;
       }
     } @else {
-      @return map-get($asterix-vars, $property);
+      @return map-get($asterix-vars, $group);
     }
   } @else {
-    @warn ('"#{$property}/#{$subproperty}" variable doesn\'t exist.');
+    @warn ('"#{$group}/#{$property}" variable doesn\'t exist.');
     @return ();
   }
 }

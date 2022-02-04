@@ -3,7 +3,9 @@
 /*
 Add a specifier (--mobile for instance) to the current selector.
 param $specifier modifier name
-param $responsively create a specifier for each breakpoint
+param $responsively {false} create a specifier for each breakpoint
+param $attribute {data-spe} define the attribute the specifier will be attached to
+param $local {true} indicate if the specifier is exclusive to the current selector or if it can be used in every children
 ---
 body {
   @include --spe(mobile, true) {
@@ -29,14 +31,21 @@ body[data-spe*="--xxsmobile"] {
 }
 ...
 */
-@mixin --spe($specifier, $responsively: false, $attribute: data-spe) {
-  &[#{$attribute}*='--#{$specifier}'] {
+@mixin --spe(
+  $name,
+  $responsively: false,
+  $attribute: --conf(specifiers-default-attribute),
+  $local: true
+) {
+  $concatener: if($local == true, '&', '');
+
+  #{$concatener}[#{$attribute}*='--#{$name}'] {
     @content;
   }
   @if ($responsively == true) {
     @each $key, $size in --var(breakpoints) {
       @include --mq($key) {
-        &[#{$attribute}*='--#{#{$key}#{$specifier}}'] {
+        #{$concatener}[#{$attribute}*='--#{#{$key}#{$name}}'] {
           @content;
         }
       }

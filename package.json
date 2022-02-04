@@ -7,11 +7,18 @@
   "author": "Digivore",
   "license": "MIT",
   "devDependencies": {
+    "concurrently": "^7.0.0",
+    "nodemon": "^2.0.15",
     "sass": "^1.49.0"
   },
   "scripts": {
-    "clean": "rm -rf examples/compiled-css",
-    "dev": "yarn && yarn run clean && sass --watch examples/scss/:examples/compiled-css/",
-    "build": "yarn && yarn run clean && sass --no-source-map examples/scss/:examples/compiled-css/"
+    "clean": "rm -rf playground/compiled-css",
+    "dev": "yarn && yarn run clean && sass --watch playground/scss/:playground/compiled-css/",
+    "build": "yarn && yarn run clean && sass --no-source-map playground/scss/:playground/compiled-css/",
+    "play": "concurrently \"nodemon playground/server.js\" \"yarn run dev\""
+  },
+  "dependencies": {
+    "express": "^4.17.2",
+    "fs-extra": "^10.0.0"
   }
 }
