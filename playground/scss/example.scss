@@ -1,0 +1,170 @@
+@charset 'UTF-8';
+// Importing Asterix...
+@import '../../src/index.scss';
+
+/* Configuration */
+// All variables have defaults.
+// Update only the ones you need to.
+
+@include --update-conf(
+  (
+    grid-columns-number: 2,
+  )
+);
+
+@include --update-vars(
+  (
+    breakpoints: (
+      xs: 480px,
+      s: 640px,
+    ),
+    colors: (
+      default: #fefefe,
+      primary: #08a858,
+      primary-on: #22c272,
+      secondary: #d40095,
+      secondary-on: #f03eba,
+      background: #141414,
+      background-on: #242424,
+    ),
+    gaps: (
+      1: 1rem,
+    ),
+  )
+);
+
+// Render all asterix's rules
+@include asterix();
+
+// Your custom code starts here...
+body {
+  margin: 0 48px;
+  text-align: center;
+  /* Using variables */
+  // Set the basic color from the sass variable using asterix mixin --var
+  color: --var(colors, default);
+
+  // OR load into the current selector scss variables as css variables.
+  @include --set-css-variables(
+    (
+      clr: --var(colors),
+      ff: --var(font-families),
+    )
+  );
+  // then access them with css
+  color: var(--clr-default);
+  font-family: var(--ff-default);
+  background-color: var(--clr-background);
+
+  /* Creating Media queries */
+  // Color must be primary from 's' breakpoint value
+  @include --mq(s) {
+    color: var(--clr-primary);
+  }
+  // And be secondary between 700px and 1000px
+  @include --mq(700px 1000px) {
+    color: var(--clr-secondary);
+  }
+
+  /* Creating specifiers */
+  // Bodies with data-spe="--bordered" will have a default color border
+  @include --spe(bordered) {
+    border: 1rem solid var(--clr-default);
+  }
+
+  // And you can mix specifiers by chainig them data-spe="--bordered--padded"
+  @include --spe(padded) {
+    padding: 1rem;
+  }
+
+  /* Extending Elements */
+  // Use extend instead of setting html attributes for the current selector
+  @include --extends(
+    (
+      data-layout: --grid --justify-center,
+      data-gap: --1,
+    )
+  );
+}
+
+/* Shorthands */
+// Create a specifier available for every selector contained elements (shorhand).
+// <div data-spe="--text-center"></div>
+// Set at the css's root, it will be available to the whole page
+// Beware of conflicts between one of these shorthands and more specific rules.
+* {
+  @include --spe(shadowed) {
+    box-shadow: 0px 0px 5px rgba(var(--clr-default-rgb), 0.1);
+  }
+}
+// Create a responsive specifier.
+* {
+  // writes "--text-center", "--xstext-center", "--stext-center"...
+  // selectors
+  @include --spe(text-center, $responsively: true) {
+    text-align: center;
+  }
+}
+
+// Buttons design system.
+[data-bt] {
+  // Set CSS variables with defaults.
+  --color: var(--clr-default);
+  --font-size: 1rem;
+  --background: var(--clr-background-on);
+  --background-on: var(--clr-background);
+
+  // Default button style.
+  color: var(--color);
+  border: none;
+  outline: none;
+  display: block;
+  cursor: pointer;
+  padding: 0.5em 1em;
+  position: relative;
+  font-size: var(--font-size);
+  max-width: 100%;
+  box-shadow: 0px 0px 0px var(--background);
+  transition: all 125ms ease-in-out;
+  font-weight: bold;
+  white-space: nowrap;
+  border-radius: 3px;
+  text-overflow: ellipsis;
+  letter-spacing: -0.1px;
+  text-decoration: none;
+  background-color: var(--background);
+
+  &:visited {
+    color: var(--color);
+  }
+
+  &:hover {
+    transform: translateX(-2px) translateY(-2px);
+    box-shadow: 4px 4px 0px var(--background);
+    transition-duration: 70ms;
+    background-color: var(--background-on);
+  }
+}
+// Specifiers
+@include --spe(primary, $attribute: data-bt, $local: false) {
+  --background: var(--clr-primary);
+  --background-on: var(--clr-primary-on);
+}
+
+@include --spe(secondary, $attribute: data-bt, $local: false) {
+  --background: var(--clr-secondary);
+  --background-on: var(--clr-secondary-on);
+}
+
+@include --spe(large, $attribute: data-bt, $local: false) {
+  --font-size: 1.3rem;
+}
+
+@include --spe(small, $attribute: data-bt, $local: false) {
+  --font-size: 0.8rem;
+}
+
+@include --spe(disabled, $attribute: data-bt, $local: false) {
+  opacity: 0.3;
+  pointer-events: none;
+}

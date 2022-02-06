@@ -20,7 +20,6 @@ $asterix-vars: (
     s: 768px,
     m: 1024px,
     l: 1200px,
-    xl: 1600px,
   ),
   colors: (
     default: black,
@@ -29,11 +28,10 @@ $asterix-vars: (
     default: 'sans-serif',
   ),
   gaps: (
-    0-5: 0.5rem,
-    1: 1rem,
-    1-5: 1.5rem,
-    2: 2rem,
-    3: 3rem,
+    1: 0.5rem,
+    2: 1rem,
+    3: 1.5rem,
+    4: 3rem,
   ),
   shapes: (
     default: 4px,

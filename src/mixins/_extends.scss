@@ -1,11 +1,11 @@
 @charset "UTF-8";
 
 /* Allow to extend several attribute with several values on a single line */
-@mixin --extends($list) {
-  @each $key, $values in $list {
-    @extend [#{$key}];
-    @each $value in $values {
-      @extend [#{$key}*='#{$value}'];
+@mixin --extends($selectors) {
+  @each $selector, $specifiers in $selectors {
+    @extend [#{$selector}];
+    @each $specifier in $specifiers {
+      @extend [#{$selector}*='#{$specifier}'];
     }
   }
 }

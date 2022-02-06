@@ -13,9 +13,9 @@
   },
   "scripts": {
     "clean": "rm -rf playground/compiled-css",
-    "dev": "yarn && yarn run clean && sass --watch playground/scss/:playground/compiled-css/",
-    "build": "yarn && yarn run clean && sass --no-source-map playground/scss/:playground/compiled-css/",
-    "play": "concurrently \"nodemon playground/server.js\" \"yarn run dev\""
+    "dev": "yarn install --ignore-engines && yarn run clean && sass --watch playground/scss/:playground/compiled-css/",
+    "build": "yarn install --ignore-engines && yarn run clean && sass --no-source-map playground/scss/:playground/compiled-css/",
+    "play": "yarn install --ignore-engines && concurrently \"nodemon playground/server.js\" \"yarn run dev\""
   },
   "dependencies": {
     "express": "^4.17.2",
