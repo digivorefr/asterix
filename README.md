@@ -1,5 +1,6 @@
 # asterix-scss
-**The scss framework who doesn't think you're a noob**
+
+![The first french satellite](https://upload.wikimedia.org/wikipedia/commons/9/98/Asterix_Musee_du_Bourget_P1020341.JPG)
 
 ## Asterix is :
 
@@ -11,13 +12,12 @@
 
 - Not intended to be used without sass, as it builds its code from your settings.
 
-- Designed for experienced frontend developer
-
-- Built upon `grid`, `flex` and css variables,
+- Built upon css variables, `grid` and `flex` properties,
 
 - Made to use custom html attributes, such as `data-layout`.
-
-
+<br><br>
+## Full documentation: [https://digivore.gitbook.io/asterix/](https://digivore.gitbook.io/asterix/)
+<br><br>
 ## Installation
 Get package from npm:
 ```shell
@@ -38,22 +38,23 @@ You can configure any asterix global variable by setting it between the `import`
 // Your index.scss file
 @import '@digivorefr/asterix-scss';
 
-$breakpoints: (
-  s: 400px,
-  m: 500px,
-  // ...
-);
-
-$color: (
-  primary: #202456,
-  default: #202020,
-);
+@include --update-vars((
+  breakpoints: (
+    s: 400px,
+    m: 500px,
+    // ...
+  ),
+  colors: (
+    primary: #248691,
+    text: #181818,
+    // ...
+  ),
+));
 
 @include asterix();
 
 // ...
 ```
-Here is the full configuration variables list.
 
 ## Main concepts
 ### Custom HTML attributes
@@ -73,7 +74,9 @@ Available attributes are:
 - `data-flex` handles flex-only properties (flex-wrap for instance)
 - `data-cols` sets the number of columns a data-layout has
 - `data-col` sets the number of column an element can wrap
-- `data-gap` handles spacing between elements in grid and flex contexts
+- `data-gap` handles spacing between elements in grid and flex
+contexts
+- `data-spe` customized specifiers use
 
 
 ### Specifiers
@@ -81,20 +84,12 @@ Asterix's custom html attribute value can be filled with **specifiers**:
 ```html
 <div data-layout="--flex--items-center"></div>
 ```
-```scss
-[data-layout*="--flex"]{
-  display: flex;
-}
-[data-layout*="--items-center"]{
-  align-items: center;
-}
-```
 As a convention, specifier are all prefixed by `--`.
 
 On the scss side, you can easily create specifiers with the provided `--spe()` mixin:
 ```scss
 *{
-  @include spe(button){
+  @include --spe(button){
     padding: 0.5rem 1rem;
     background: black;
     color: white;
@@ -105,17 +100,29 @@ On the scss side, you can easily create specifiers with the provided `--spe()` m
 ```
 ```html
 <button class="--button">Asterix is awesome</button>
-<a class="--button">Asterix is awesome</a>
+<a data-spe="--button">Asterix is awesome</a>
 ```
+**Note** that customized specifiers are by default attache to the data-spe attribute.
 
+You can and also extend a bunch of rules at once:
+```scss
+@include --extends((
+  data-layout: --flex --justify-center --items-center,
+  data-gap: --1,
+))
+```
 ### Responsiveness
 **Asterix is mobile-first: `$breakpoints` values are considered as `min-width` into media queries.**
 
 Asterix uses its `$breakpoints` configuration variable and provide tools for both html and css.
 
 #### HTML
-**Breakpoints are available into every native specifiers** and custom specifiers created with the parameter `$responsively` set to `true`.
 The breakpoint's key is prefixed to specifier, **without any separation**.
+
+**Breakpoints are available into every native specifiers**
+
+For custom specifiers, you will have to set `$responsively` to `true`.
+
 ```scss
 *{
   @include spe(width-100, true){
@@ -149,83 +156,7 @@ A terrific media query builder is available through the `--mq()` mixin.
 // @media screen and (min-width:500px) and (max-width:922px)...
 ```
 
-You can also retrieve any breakpoint key by using an old-fashioned `map-get($breakpoints,m)`, or use the asterix mixin `--breakpoint(m)`
-
-## Basic HTML usage
-The `data-layout` html attribute sets a simple `display` property.
-```html
-<div data-layout="--flex"></div>
-```
-you can use `--block`, `--none`, `--flex`, `--grid`
-
-<hr>
-
-Chain as many specifiers as required with `'--'`:
-```html
-<div data-layout="--flex--justify-end--items-center"></div>
-```
-Get the complete `data-layout` specification here.
-<hr>
-
-Every specifier has responsive variations. Simply prefix it with a breakpoint's name, **without any separation**.
-```html
-<div data-layout="--block--mflex--mjustify-end--mitems-center"></div>
-```
-_Breakpoints are set in the configuration's `$breakpoints` variable._
-<hr>
-
-You can nest as many layout as you need to:
-```html
-<div data-layout="--grid">
-  <div data-layout="--flex">
-    <div data-layout="--grid"></div>
-  </div>
-  <div data-layout="--grid"></div>
-</div>
-```
+You can also retrieve any breakpoint key by using an old-fashioned `map-get($breakpoints,m)`, or the asterix mixin `--var(breakpoints, m)`
 
 
-
-
-
-
-## Create layouts
-
-Create two columns side by side :
-```html
-<div data-layout="--grid" data-cols="--2">
-  <div>item</div>
-  <div>item</div>
-</div>
-```
-
-Inline elements :
-```html
-<div data-layout="--flex">
-  <div>item</div>
-  <div>item</div>
-</div>
-```
-
-Add gap between elements:
-```html
-<!-- Vertical and horizontal gaps -->
-<div data-layout="--grid" data-cols="--2" data-gap="--1">
-  <div>item</div>
-  <div>item</div>
-</div>
-
-<!-- For vertical and/or horizontal gaps -->
-<div data-layout="--grid" data-cols="--2" data-hgap="--1" data-vgap="--2">
-  <div>item</div>
-  <div>item</div>
-</div>
-```
-
-Easily set `justify-content`, `align-items`, and `align-self` properties :
-```html
-<div data-layout="--flex--justify-center--items-center">
-  <div>item</div>
-  <div data-layout="--self-end">item</div>
-</div>
-```
+### Variables
