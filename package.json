@@ -1,24 +1,37 @@
 {
-  "name": "@digivorefr/asterix-sass",
+  "name": "@digivorefr/asterix-scss",
   "version": "1.0.0",
-  "description": "The scss framework who doesn't think you're a noob",
+  "description": "The Scss framework who doesn't think you're a noob",
   "main": "src/index.scss",
   "repository": "git@github.com:digivorefr/asterix.git",
   "author": "Digivore",
   "license": "MIT",
+  "maintainers": [
+    {
+      "name": "Digivore",
+      "email": "hello@digivore.fr"
+    }
+  ],
   "devDependencies": {
     "concurrently": "^7.0.0",
-    "nodemon": "^2.0.15",
     "sass": "^1.49.0"
   },
   "scripts": {
     "build": "yarn install --ignore-engines && yarn run clean && sass --no-source-map --style=compressed playground/scss/:playground/compiled-css/",
     "clean": "rm -rf playground/compiled-css",
     "dev": "yarn install --ignore-engines && yarn run clean && sass --watch playground/scss/:playground/compiled-css/",
-    "play": "yarn install --ignore-engines && concurrently \"nodemon playground/server.js\" \"yarn run dev\""
+    "play": "yarn install --ignore-engines && concurrently \"node playground/server.js\" \"yarn run dev\""
   },
   "dependencies": {
     "express": "^4.17.2",
     "fs-extra": "^10.0.0"
-  }
+  },
+  "keywords": [
+    "scss",
+    "css",
+    "sass",
+    "framework",
+    "responsive",
+    "mobile-first"
+  ]
 }

@@ -21,7 +21,7 @@
 # Installation
 Get package from npm:
 ```shell
-npm install asterix-scss
+npm i @digivorefr/asterix-scss
 ```
 
 Import Asterix into a scss file and initialize it:
