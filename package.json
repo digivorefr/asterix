@@ -12,9 +12,9 @@
     "sass": "^1.49.0"
   },
   "scripts": {
+    "build": "yarn install --ignore-engines && yarn run clean && sass --no-source-map --style=compressed playground/scss/:playground/compiled-css/",
     "clean": "rm -rf playground/compiled-css",
     "dev": "yarn install --ignore-engines && yarn run clean && sass --watch playground/scss/:playground/compiled-css/",
-    "build": "yarn install --ignore-engines && yarn run clean && sass --no-source-map playground/scss/:playground/compiled-css/",
     "play": "yarn install --ignore-engines && concurrently \"nodemon playground/server.js\" \"yarn run dev\""
   },
   "dependencies": {

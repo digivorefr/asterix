@@ -1,4 +1,4 @@
-# asterix-scss
+# Asterix-scss
 
 ![The first french satellite](https://upload.wikimedia.org/wikipedia/commons/9/98/Asterix_Musee_du_Bourget_P1020341.JPG)
 
@@ -18,16 +18,16 @@
 <br><br>
 ## Full documentation: [https://digivore.gitbook.io/asterix/](https://digivore.gitbook.io/asterix/)
 <br><br>
-## Installation
+# Installation
 Get package from npm:
 ```shell
-npm install @digivorefr/asterix-scss
+npm install asterix-scss
 ```
 
 Import Asterix into a scss file and initialize it:
 ```scss
 // Your index.scss file
-@import '@digivorefr/asterix-scss';
+@import 'asterix-scss';
 @include asterix();
 
 // ...
@@ -36,7 +36,7 @@ Import Asterix into a scss file and initialize it:
 You can configure any asterix global variable by setting it between the `import` and the `asterix()` call
 ```scss
 // Your index.scss file
-@import '@digivorefr/asterix-scss';
+@import 'asterix-scss';
 
 @include --update-vars((
   breakpoints: (
@@ -56,8 +56,8 @@ You can configure any asterix global variable by setting it between the `import`
 // ...
 ```
 
-## Main concepts
-### Custom HTML attributes
+# Main concepts
+## Custom HTML attributes
 Asterix uses its own custom html attributes and relies on their corresponding css selectors.
 ```html
 <div data-layout></div>
@@ -78,8 +78,81 @@ Available attributes are:
 contexts
 - `data-spe` customized specifiers use
 
+## Variables
+Asterix uses a global variable `$asterix-vars` to inject your design system values into it.
+```scss
+$asterix-vars: (
+  breakpoints: (
+    xs: 480px,
+    s: 768px,
+    m: 1024px,
+    l: 1200px,
+  ),
+  colors: (
+    default: black,
+  ),
+  font-families: (
+    default: 'sans-serif',
+  ),
+  gaps: (
+    1: 0.5rem,
+    2: 1rem,
+    3: 1.5rem,
+    4: 3rem,
+  ),
+  shapes: (
+    default: 4px,
+  ),
+);
+```
+You can add any values and/or group of values to fit your design system.
 
-### Specifiers
+Even if you can provide an empty var, Asterix requires a `breakpoints` and a `gaps` group to properly write layout rules.
+
+All other groups are not used into the Asterix's core and are there to provide dynamic values to scss.
+
+You can retrieve easily a variable value or a variables group by using the `--var($group[, $property]) mixin:
+```scss
+a{
+  color: --var(colors, default);
+}
+```
+
+### CSS variables
+Asterix internally uses css variables to build layouts.
+
+Using css variables can reduce your compiled css weight and allow you to easily update values on the frontend side. Meanwhile, you won't be able to compute them on the scss side.
+
+To allow developers to code the way they want, both scss and css variables can be used, seamlessly.
+All you have to do is to translate selected scss variables to css variables with the `--set-css-variables()` mixin:
+
+```scss
+// Set following css variables:
+// --color-default: black;
+// --color-primary: #C05454;
+// --font-sizes-default: 16px;
+// --font-sizes-big: 1.5rem;
+
+@include set-css-variables((
+  color: (
+    default: black,
+    primary: #C05454,
+    //...
+  ),
+  font-sizes: (
+    default: 16px,
+    big: 1.5rem,
+  ),
+));
+
+a{
+  color: var(--color-default);
+  font-size: var(--font-sizes-big);
+}
+```
+
+
+## Specifiers
 Asterix's custom html attribute value can be filled with **specifiers**:
 ```html
 <div data-layout="--flex--items-center"></div>
@@ -111,12 +184,12 @@ You can and also extend a bunch of rules at once:
   data-gap: --1,
 ))
 ```
-### Responsiveness
+## Responsiveness
 **Asterix is mobile-first: `$breakpoints` values are considered as `min-width` into media queries.**
 
 Asterix uses its `$breakpoints` configuration variable and provide tools for both html and css.
 
-#### HTML
+### HTML
 The breakpoint's key is prefixed to specifier, **without any separation**.
 
 **Breakpoints are available into every native specifiers**
@@ -137,7 +210,7 @@ For custom specifiers, you will have to set `$responsively` to `true`.
 <div data-layout="--mflex--mitems-center" class="--width-100--mwidth-auto"></div>
 ```
 
-#### SCSS
+### SCSS
 A terrific media query builder is available through the `--mq()` mixin.
 ```scss
 @include --mq(m){
@@ -159,4 +232,31 @@ A terrific media query builder is available through the `--mq()` mixin.
 You can also retrieve any breakpoint key by using an old-fashioned `map-get($breakpoints,m)`, or the asterix mixin `--var(breakpoints, m)`
 
 
-### Variables
+# Developing
+There is a small playground in the repository, composed of a very basic node server serving an html page to localhost. You can use it to play with Asterix out of the box.
+
+If you are interested by testing or developing above Asterix:
+- Clone the repo
+- Create a new .env file at the project root, and copy/paste values from .env.example
+
+
+**If you have docker and docker-compose installed:**
+- run docker-compose up -d
+- get into the container: docker exec -ti asterix sh
+- then run npm/yarn commands (see below)
+
+**If you cannot use docker:**
+- you'll need a dependencies manager installed (npm, yarn...)
+- you'll need nodejs 15 or more installed
+- run npm/yarn commands (see below)
+
+## Commands
+- `build` : compile scss once, minified
+- `clean` : remove all compiles css files
+- `dev` : watch for scss changes and compile it
+- `play` : serve playground/index.html in http://localhost:[process.env.PORT] and watches for scss changes.
+
+# Credits
+Many thank to [Matthieu Jabbour](https://github.com/matthieujabbour) and his [sonar-ui](https://github.com/openizr/sonar-ui) library.
+
+Feel free to test, use, contribute and fork Asterix.
