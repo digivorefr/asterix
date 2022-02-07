@@ -16,7 +16,7 @@
 
 - Made to use custom html attributes, such as `data-layout`.
 <br><br>
-## Full documentation: [https://digivore.gitbook.io/asterix/](https://digivore.gitbook.io/asterix/)
+## **Full documentation: [https://digivore.gitbook.io/asterix/](https://digivore.gitbook.io/asterix/)**
 <br><br>
 # Installation
 Get package from npm:
